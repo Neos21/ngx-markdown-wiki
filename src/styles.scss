@@ -1,0 +1,204 @@
+// Normalize
+// ----------------------------------------------------------------------------------------------------
+
+@import '../node_modules/@neos21/neos-normalize/neos-normalize.min.css';
+
+
+// Global
+// ----------------------------------------------------------------------------------------------------
+
+body {
+  color: #212529;
+}
+
+a {
+  color: #07ff;
+  
+  &:hover {
+    color: #05b;
+  }
+}
+
+em     { color: #296; }
+strong { color: #f00; }
+
+
+// Page
+// ----------------------------------------------------------------------------------------------------
+
+$white-darken : #ddd;
+$white-lighten: #fff;
+
+@mixin white-link() {
+  color: $white-darken;
+  
+  &:hover {
+    color: $white-lighten;
+  }
+}
+
+#ngx-markdown-wiki-wrapper {
+  $header-height: 4rem;
+  $footer-height: 4rem;
+  $nav-width: 270px;
+  
+  display: grid;
+  grid-template-rows: $header-height 2fr $footer-height;
+  grid-template-columns: $nav-width 1fr;
+  grid-template-areas: "header main"
+                       "nav    main"
+                       "nav    footer";
+  min-height: 100vh;
+  
+  .header {
+    grid-area: header;
+    background: #102;
+    
+    .title {
+      text-align: center;
+      
+      a {
+        @include white-link();
+        
+        height: $header-height;
+        font-weight: bold;
+        text-decoration: none;
+        line-height: $header-height;
+      }
+    }
+    
+    .hamburger {
+      display: none;
+    }
+  }
+  
+  .nav {
+    grid-area: nav;
+    color: $white-darken;
+    background: #213;
+    
+    .nav-inner {
+      padding: 1rem 1.25rem;
+      
+      & > ul > li {
+        margin-left: .75rem;
+        color: $white-darken;
+      }
+      
+      a {
+        @include white-link();
+      }
+    }
+  }
+  
+  .main {
+    grid-area: main;
+    padding: 1rem 1.25rem;
+    
+    // & > .contents > .contents-inner
+  }
+  
+  .footer {
+    grid-area: footer;
+    padding: 0 1.25rem;
+    
+    .title {
+      border-top: 1px solid #ccc;
+      padding-top: 1rem;
+      text-align: center;
+    }
+  }
+  
+  
+  // 768px 以下の場合
+  @media (max-width: 768px) {
+    display: block;
+    
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      
+      .hamburger {
+        $hamburger-height: 2.5rem;
+        
+        display: block;
+        position: absolute;
+        top: calc((#{$header-height} - #{$hamburger-height}) / 2);
+        left: 1rem;
+        
+        button {
+          position: relative;
+          border: 1px solid $white-darken;
+          border-radius: 4px;
+          height: 2.5rem;
+          background: transparent;
+          cursor: pointer;
+          
+          i, i::before, i::after {
+            content: "";
+            display: block;
+            position: relative;
+            width: 2rem;
+            height: 2px;
+            background: $white-darken;
+          }
+          
+          i::before { top: -10px; }
+          i::after  { top:   8px; }
+          
+          &:hover, &:focus {
+            border-color:$white-lighten;
+            
+            i, i::before, i::after {
+              background: $white-lighten;
+            }
+          }
+        }
+      }
+    }
+    
+    .nav {
+      position: fixed;
+      top: $header-height;
+      left: -$nav-width;
+      width: $nav-width;
+      height: calc(100vh - #{$header-height});
+      overflow-y: auto;
+      transition: left .2s;
+    }
+    
+    .main {
+      padding-top: calc(#{$header-height} + 1rem);
+    }
+    
+    .footer {
+      height: $footer-height;
+    }
+  }
+}
+
+// toggleNav() により body 要素に .show-nav が付与された時にナビゲーションを表示するようにする
+.show-nav #ngx-markdown-wiki-wrapper .nav {
+  left: 0;
+}
+
+
+// Custom Class
+// ----------------------------------------------------------------------------------------------------
+
+// 読込中
+.loading {
+  color: #999;
+}
+
+// 非表示にするモノ
+.hidden {
+  display: none;
+}
+
+// エラー部分
+.error {
+  color: #f00;
+}

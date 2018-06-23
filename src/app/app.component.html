@@ -1,0 +1,31 @@
+<div id="ngx-markdown-wiki-wrapper">
+  
+  <header class="header">
+    <div class="title">
+      <a [routerLink]="['/']" [fragment]="'/' + defaultPath">{{ title }}</a>
+    </div>
+    
+    <div class="hamburger">
+      <button type="button" (click)="toggleNav()">
+        <i></i>
+      </button>
+    </div>
+  </header>
+  
+  <nav class="nav" (click)="onClick($event)">
+    <div class="nav-inner" [innerHTML]="nav"></div>
+  </nav>
+  
+  <main class="main">
+    <div class="contents" (click)="onClick($event)">
+      <div class="contents-inner" [innerHTML]="contents"></div>
+    </div>
+  </main>
+  
+  <footer class="footer">
+    <div class="title">
+      <a [routerLink]="['/']" [fragment]="'/' + defaultPath">{{ title }}</a>
+    </div>
+  </footer>
+  
+</div>

@@ -1,5 +1,11 @@
 # ngx-markdown-wiki
 
+Markdown-based Wiki system made with Angular.
+
+__[Enter This Website.](https://neos21.github.io/ngx-markdown-wiki/)__
+
+---
+
 Markdown ファイルを動的にコンパイルして表示する Angular アプリです。
 
 Markdown ファイルが格納されているディレクトリ構造をそのまま URL に反映し、ダイレクトにアクセスできるようにしています。

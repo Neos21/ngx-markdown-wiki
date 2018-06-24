@@ -101,11 +101,8 @@
       true,
       1000
     ],
-    // 1行の最大桁数を140桁にする (true・140)
-    "max-line-length": [
-      true,
-      140
-    ],
+    // 1行の最大桁数を制限しない
+    "max-line-length": false,
     // public・protected・private をメンバ (変数・メソッド) に付与することを強制しない (false)
     "member-access": false,
     // クラスメンバの順序を指定する (true) : public → private・static → instance な順
@@ -136,8 +133,8 @@
         ]
       }
     ],
-    // ステートメントにおける return 文の手前に空行を開ける (true) : return 文のみのブロックの場合は空行が開かない
-    "newline-before-return": true,
+    // ステートメントにおける return 文の手前に空行を開けない (false) : return 文のみのブロックの場合は空行が開かない
+    "newline-before-return": false,
     // new の前後のカッコにスペースを開ける (true)
     "new-parens": true,
     // <Type> より as Type と書かせる (true)
@@ -196,10 +193,8 @@
     "no-invalid-this": true,
     // String とコメント以外のおかしなスペースを検知する (true)
     "no-irregular-whitespace": true,
-    // マジックナンバーを禁止する (true) : デフォルトで -1・0・1 は許容されている・配列に許容したい数値を列挙できる
-    "no-magic-numbers": [
-      true
-    ],
+    // マジックナンバーを禁止しない (false) : デフォルトで -1・0・1 は許容されている・配列に許容したい数値を列挙できる
+    "no-magic-numbers": false,
     // 1ファイル内でマージできる namespace を許容しない (true)
     "no-mergeable-namespace": true,
     // new の使い方をチェックする (true)

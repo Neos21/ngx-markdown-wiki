@@ -1,5 +1,3 @@
-// tslint:disable:max-line-length no-magic-numbers
-
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit, Renderer } from '@angular/core';
 import { DomSanitizer, DOCUMENT, SafeHtml } from '@angular/platform-browser';
@@ -31,6 +29,8 @@ export class AppComponent implements OnInit {
   private currentBasePath: string = '';
   /** アプリ内で使用する定数 */
   private appConstants: any = {
+    /** Markdown ファイルが格納されているベースパス (末尾に「/」を含めない) */
+    docsPath: 'assets/docs',
     /** 他の Markdown ファイルへのリンクに付与する CSS クラス名 */
     anchorMd: 'anchor-md',
     /** 同ページ内のハッシュリンクに付与する CSS クラス名 */
@@ -45,6 +45,8 @@ export class AppComponent implements OnInit {
    * @param router Router
    * @param domSanitizer DomSanitizer
    * @param httpClient HttpClient
+   * @param renderer Renderer
+   * @param document Document
    */
   constructor(
     private router: Router,
@@ -73,16 +75,16 @@ export class AppComponent implements OnInit {
     });
     
     // 初回アクセス時、書式に合う URL でファイルが指定されていればそのファイルを初期表示する
-    // index.html で SessionStorage に location.href を格納している (404.html からの遷移にも対応)
+    // index.html で SessionStorage に location.href を格納している
     const rawInitUrl = sessionStorage.initUrl || '';
     delete sessionStorage.initUrl;
-    // アプリのベース URL (「/#」以前があればその部分) を取得する : 「/」で終わるようにする
+    // アプリのベース URL を取得する :  「/#」以降があった場合は除去し、「/」で終わるようにする
     const baseUrl = location.href.replace(/\/#.*/, '/');
     // SessionStorage の値からベース URL を削り、「#/」で始まる正しい URL になっているか確認する
     const initUrl = rawInitUrl.replace(baseUrl, '');
     if(initUrl.startsWith('#/') && initUrl.match('.md')) {
       // 「#/」で始まる場合は「#/」を除去し、初期表示するページとして表示する
-      this.showContents(initUrl.replace(/^\#\//, ''));
+      this.showContents(initUrl.replace(/^#\//, ''));
     }
     else {
       // 「#/」で始まらない不正なハッシュか、特に指定がなければ、指定のページを初期表示する
@@ -104,7 +106,7 @@ export class AppComponent implements OnInit {
     if(target.classList.contains(this.appConstants.anchorMd)) {
       // 他の「.md」ファイルへのリンクの場合
       event.preventDefault();
-      // パスを取得する
+      // パスを取得する : Markdown パース時に「#/」で始まるリンクにしているため除去しておく
       const href = target.attributes.href.nodeValue.replace(/^#/, '');
       // 「/#/【フルパス】」の形にして遷移する
       this.router.navigate([''], { fragment: href });
@@ -126,7 +128,7 @@ export class AppComponent implements OnInit {
    */
   public toggleNav(isShown?: boolean): void {
     // 引数が指定されていれば引数に従って操作、そうでなければ現在の状態を反転させる
-    this.isShownNav = typeof isShown !== 'undefined' ? isShown : !this.isShownNav;
+    this.isShownNav = isShown !== undefined ? isShown : !this.isShownNav;
     this.renderer.setElementClass(this.document.body, 'show-nav', this.isShownNav);
   }
   
@@ -170,7 +172,6 @@ export class AppComponent implements OnInit {
     // ファイルが指定されていない場合は非表示にする
     if(!this.navPath) {
       this.nav = '<span class="hidden">ナビゲーションファイルなし</span>';
-      
       return;
     }
     
@@ -186,10 +187,51 @@ export class AppComponent implements OnInit {
   }
   
   /**
-   * 引数の相対パスと、全画面の情報から、引数の絶対パスを導く
+   * HttpClient を利用して Markdown ファイルを取得する
+   * 
+   * @param fullPath ドキュメントのベースパスに続くファイルのフルパス
+   * @return 取得結果テキスト
+   */
+  private getMarkdownFile(fullPath: string): Promise<any> {
+    return this.httpClient.get(`${this.appConstants.docsPath}/${fullPath}`, { responseType: 'text' }).toPromise();
+  }
+  
+  /**
+   * フルパスからファイル部分を除去し、ベースパスを求める
+   * 
+   * @param fullPath フルパス
+   * @return ベースパス (ルートの場合は '' になる)
+   */
+  private detectNextBasePath(fullPath: string): string {
+    const nextFullPathBaseArray = fullPath.split('/');
+    nextFullPathBaseArray.pop();
+    const nextFullPathBase = nextFullPathBaseArray.join('/');
+    return nextFullPathBase;
+  }
+  
+  /**
+   * Marked で変換する
+   * 
+   * @param markdown Markdown テキスト
+   * @return HTML 変換結果
+   */
+  private parseMarkdown(markdown: string): string {
+    const html = marked(markdown)
+      // <a href="./example.md#example"> 部分を <a href="#/example.md#example" class="anchor-md"> に置換する
+      .replace(/\<a href\=\"(?!http.?\:\/\/|ftp\:\/\/|file\:\/\/)(.*?)\.md(.*?)\"\>/g, (match, path, hash) => {
+        const fullPath = this.detectNextFullPath(path);
+        return `<a href="${fullPath}.md${hash}" class="${this.appConstants.anchorMd}">`;
+      })
+      // <a href="#example"> 部分を <a href="#example" class="anchor-hash"> に置換する
+      .replace(/\<a href\=\"#(.*?)\"\>/g, `<a href="#$1" class="${this.appConstants.anchorHash}">`);
+    return html;
+  }
+  
+  /**
+   * 引数の相対パスと、現在の画面の情報から、引数の絶対パスを導く
    * 
    * @param hrefStr 生のリンク URL
-   * @return 引数の絶対パス (「/」から始まる)
+   * @return 引数の絶対パス (「#/」から始まる)
    */
   private detectNextFullPath(hrefStr: string): string {
     // 同階層の「./」で始まっている場合は除去しておく
@@ -206,54 +248,9 @@ export class AppComponent implements OnInit {
     const nextFullPathBase = currentBasePathArray.length ? `${currentBasePathArray.join('/')}/` : '';
     // パスから「../」を除去し、ベースと結合してフルパスを作る
     let nextFullPath = nextFullPathBase + flatLinkPath.replace(/\.\.\//g, '');
-    // フルパスは「/」から始まるようにする
-    nextFullPath = nextFullPath.replace(/^(\/)*/g, '/');
-    
+    // フルパスは「#/」から始まるようにする
+    nextFullPath = `#${nextFullPath.replace(/^(\/)*/g, '/')}`;
     return nextFullPath;
-  }
-  
-  /**
-   * フルパスからファイル部分を除去し、ベースパスを求める
-   * 
-   * @param fullPath フルパス
-   * @return ベースパス (ルートの場合は '' になる)
-   */
-  private detectNextBasePath(fullPath: string): string {
-    const nextFullPathBaseArray = fullPath.split('/');
-    nextFullPathBaseArray.pop();
-    const nextFullPathBase = nextFullPathBaseArray.join('/');
-    
-    return nextFullPathBase;
-  }
-  
-  /**
-   * HttpClient を利用して Markdown ファイルを取得する
-   * 
-   * @param fullPath 'assets/docs/' に続くファイルのフルパス
-   * @return 取得結果テキスト
-   */
-  private getMarkdownFile(fullPath: string): Promise<any> {
-    return this.httpClient.get(`assets/docs/${fullPath}`, { responseType: 'text' }).toPromise();
-  }
-  
-  /**
-   * Marked で変換する
-   * 
-   * @param markdown Markdown テキスト
-   * @return HTML 変換結果
-   */
-  private parseMarkdown(markdown: string): string {
-    const html = marked(markdown)
-      // <a href="./example.md#example"> 部分を <a href="#/example.md#example" class="anchor-md"> に置換する
-      .replace(/\<a href\=\"(?!http.?\:\/\/|ftp\:\/\/|file\:\/\/)(.*?)\.md(.*?)\"\>/g, (match, path, hash) => {
-        const fullPath = this.detectNextFullPath(path);
-        
-        return `<a href="#${fullPath}.md${hash}" class="${this.appConstants.anchorMd}">`;
-      })
-      // <a href="#example"> 部分を <a href="#example" class="anchor-hash"> に置換する
-      .replace(/\<a href\=\"#(.*?)\"\>/g, `<a href="#$1" class="${this.appConstants.anchorHash}">`);
-    
-    return html;
   }
   
   /**
@@ -269,7 +266,7 @@ export class AppComponent implements OnInit {
     if(!element) { return; }
     // 要素があればスムーズスクロールする
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // 必要であればハッシュ付きの URL を履歴に追加する
+    // 必要であればハッシュ付きの URL を履歴に追加する : 現在のパスの「.md」以降を指定のハッシュに差し替える
     if(pushState) {
       history.pushState(null, null, `${location.href.replace(/\.md#.*/, '.md')}#${hash}`);
     }

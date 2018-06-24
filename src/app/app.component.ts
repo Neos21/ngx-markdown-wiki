@@ -70,6 +70,7 @@ export class AppComponent implements OnInit {
         // ナビゲーションを閉じスクロール位置を最上部にする
         window.scrollTo(0, 0);
         this.toggleNav(false);
+        document.querySelector('.main').scrollTo(0, 0);
         document.querySelector('.nav').scrollTo(0, 0);
       }
     });

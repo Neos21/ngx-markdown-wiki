@@ -9,6 +9,10 @@
 
 html {
   overflow-x: hidden;
+  
+  @media (max-width: 768px) {
+    overflow-y: hidden;
+  }
 }
 
 body {
@@ -47,9 +51,9 @@ $white-lighten: #fff;
   
   display: grid;
   grid-template-rows: $header-height 1fr;
-  grid-template-columns: $nav-width 1fr 1.25rem;
-  grid-template-areas: "header main ."
-                       "nav    main .";
+  grid-template-columns: $nav-width 1.25rem 1fr 1.25rem;
+  grid-template-areas: "header . main ."
+                       "nav    . main .";
   min-height: 100vh;
   
   .header {
@@ -84,7 +88,7 @@ $white-lighten: #fff;
     background: #213;
     
     .nav-inner {
-      padding: 1rem 1.25rem;
+      padding: 1rem 1.25rem 4rem;
       
       & > ul > li {
         margin-left: .75rem;
@@ -100,7 +104,7 @@ $white-lighten: #fff;
   .main {
     grid-area: main;
     
-    padding: 1rem 0 1rem 1.25rem;
+    padding: 1rem 0;
     
     // & > .contents > .contents-inner
     
@@ -108,6 +112,7 @@ $white-lighten: #fff;
       .title {
         border-top: 1px solid #ccc;
         padding-top: 1rem;
+        padding-bottom: 1rem;
         text-align: center;
       }
     }
@@ -118,13 +123,19 @@ $white-lighten: #fff;
     display: block;
     
     .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 99999;
+      
       .hamburger {
         $hamburger-height: 2.5rem;
         
         display: block;
         position: absolute;
         top: calc((#{$header-height} - #{$hamburger-height}) / 2);
-        right: 1rem;
+        left: 1rem;
         
         button {
           position: relative;
@@ -160,16 +171,24 @@ $white-lighten: #fff;
     
     .nav {
       position: fixed;
-      top: 0;
+      top: $header-height;
       left: -$nav-width;
-      height: 100vh;
+      height: calc(100vh - #{$header-height});
       overflow-y: auto;
       transition: left .2s;
       z-index: 99999;
     }
     
     .main {
+      position: absolute;
+      top: $header-height;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - #{$header-height});
+      overflow-y: scroll;
       padding-right: 1.25rem;
+      padding-left: 1.25rem;
+      z-index: 1;
     }
   }
   

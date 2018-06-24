@@ -9,14 +9,16 @@
 
 html {
   overflow-x: hidden;
-  
-  @media (max-width: 768px) {
-    overflow-y: hidden;
-  }
 }
 
 body {
   color: #212529;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    height: 100%;
+  }
 }
 
 a {
@@ -121,6 +123,7 @@ $white-lighten: #fff;
   // 768px 以下の場合
   @media (max-width: 768px) {
     display: block;
+    height: 100%;
     
     .header {
       position: fixed;
@@ -175,8 +178,9 @@ $white-lighten: #fff;
       left: -$nav-width;
       height: calc(100vh - #{$header-height});
       overflow-y: auto;
-      transition: left .2s;
+      -webkit-overflow-scrolling: touch;
       z-index: 99999;
+      transition: left .2s;
     }
     
     .main {
@@ -186,6 +190,7 @@ $white-lighten: #fff;
       width: 100%;
       height: calc(100vh - #{$header-height});
       overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
       padding-right: 1.25rem;
       padding-left: 1.25rem;
       z-index: 1;

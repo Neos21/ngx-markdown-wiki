@@ -20,12 +20,11 @@
     <div class="contents" (click)="onClick($event)">
       <div class="contents-inner" [innerHTML]="contents"></div>
     </div>
+    
+    <footer class="footer">
+      <div class="title">
+        <a [routerLink]="['/']" [fragment]="'/' + defaultPath">{{ title }}</a>
+      </div>
+    </footer>
   </main>
-  
-  <footer class="footer">
-    <div class="title">
-      <a [routerLink]="['/']" [fragment]="'/' + defaultPath">{{ title }}</a>
-    </div>
-  </footer>
-  
 </div>

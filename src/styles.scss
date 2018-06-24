@@ -7,6 +7,10 @@
 // Global
 // ----------------------------------------------------------------------------------------------------
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   color: #212529;
 }
@@ -39,19 +43,19 @@ $white-lighten: #fff;
 
 #ngx-markdown-wiki-wrapper {
   $header-height: 4rem;
-  $footer-height: 4rem;
   $nav-width: 270px;
   
   display: grid;
-  grid-template-rows: $header-height 2fr $footer-height;
-  grid-template-columns: $nav-width 1fr;
-  grid-template-areas: "header main"
-                       "nav    main"
-                       "nav    footer";
+  grid-template-rows: $header-height 1fr;
+  grid-template-columns: $nav-width 1fr 1.25rem;
+  grid-template-areas: "header main ."
+                       "nav    main .";
   min-height: 100vh;
   
   .header {
     grid-area: header;
+    
+    height: $header-height;
     background: #102;
     
     .title {
@@ -74,6 +78,8 @@ $white-lighten: #fff;
   
   .nav {
     grid-area: nav;
+    
+    width: $nav-width;
     color: $white-darken;
     background: #213;
     
@@ -93,45 +99,38 @@ $white-lighten: #fff;
   
   .main {
     grid-area: main;
-    padding: 1rem 1.25rem;
+    
+    padding: 1rem 0 1rem 1.25rem;
     
     // & > .contents > .contents-inner
-  }
-  
-  .footer {
-    grid-area: footer;
-    padding: 0 1.25rem;
     
-    .title {
-      border-top: 1px solid #ccc;
-      padding-top: 1rem;
-      text-align: center;
+    .footer {
+      .title {
+        border-top: 1px solid #ccc;
+        padding-top: 1rem;
+        text-align: center;
+      }
     }
   }
-  
   
   // 768px 以下の場合
   @media (max-width: 768px) {
     display: block;
     
     .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      
       .hamburger {
         $hamburger-height: 2.5rem;
         
         display: block;
         position: absolute;
         top: calc((#{$header-height} - #{$hamburger-height}) / 2);
-        left: 1rem;
+        right: 1rem;
         
         button {
           position: relative;
           border: 1px solid $white-darken;
           border-radius: 4px;
+          padding: 0 .5rem;
           height: 2.5rem;
           background: transparent;
           cursor: pointer;
@@ -161,27 +160,23 @@ $white-lighten: #fff;
     
     .nav {
       position: fixed;
-      top: $header-height;
+      top: 0;
       left: -$nav-width;
-      width: $nav-width;
-      height: calc(100vh - #{$header-height});
+      height: 100vh;
       overflow-y: auto;
       transition: left .2s;
+      z-index: 99999;
     }
     
     .main {
-      padding-top: calc(#{$header-height} + 1rem);
-    }
-    
-    .footer {
-      height: $footer-height;
+      padding-right: 1.25rem;
     }
   }
-}
-
-// toggleNav() により body 要素に .show-nav が付与された時にナビゲーションを表示するようにする
-.show-nav #ngx-markdown-wiki-wrapper .nav {
-  left: 0;
+  
+  // toggleNav() により body 要素に .show-nav が付与された時にナビゲーションを表示するようにする
+  .show-nav & .nav {
+    left: 0;
+  }
 }
 
 

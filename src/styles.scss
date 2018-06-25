@@ -133,6 +133,22 @@ $nav-width: 270px;
     }
   }
   
+  .nav-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 9999;
+    
+    button {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, .5);
+      cursor: pointer;
+    }
+  }
+  
   .main {
     grid-area: main;
     padding: 1rem 0;
@@ -171,12 +187,8 @@ $nav-width: 270px;
       top: $header-height;
       left: -$nav-width;
       height: calc(100vh - #{$header-height});
+      overflow-y: auto;
       transition: left .2s;
-      
-      .nav-inner {
-        height: 100%;
-        overflow-y: auto;
-      }
     }
     
     .main {
@@ -193,8 +205,15 @@ $nav-width: 270px;
   }
   
   // toggleNav() により body 要素に .show-nav が付与された時にナビゲーションを表示するようにする
-  .show-nav #ngx-markdown-wiki-wrapper .nav {
-    left: 0;
+  .show-nav #ngx-markdown-wiki-wrapper {
+    .nav {
+      left: 0;
+    }
+    
+    .nav-background {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 

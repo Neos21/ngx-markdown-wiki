@@ -16,6 +16,10 @@
     <div class="nav-inner" [innerHTML]="nav"></div>
   </nav>
   
+  <div class="nav-background">
+    <button type="button" (click)="toggleNav(false)"></button>
+  </div>
+  
   <main class="main">
     <div class="contents" (click)="onClick($event)">
       <div class="contents-inner" [innerHTML]="contents"></div>

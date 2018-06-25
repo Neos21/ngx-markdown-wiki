@@ -16,7 +16,7 @@ body {
 }
 
 a {
-  color: #07ff;
+  color: #07f;
   
   &:hover {
     color: #05b;
@@ -125,6 +125,10 @@ $nav-width: 270px;
       & > ul > li {
         margin-left: .75rem;
         color: $white-darken;
+        
+        li {
+          margin-left: 1.5rem;
+        }
       }
       
       a {
@@ -158,6 +162,7 @@ $nav-width: 270px;
     
     .footer {
       .title {
+        margin-top: 3rem;
         border-top: 1px solid #ccc;
         padding-top: 1rem;
         padding-bottom: 1rem;
@@ -169,6 +174,11 @@ $nav-width: 270px;
 
 // 768px 以下の場合
 @media (max-width: 768px) {
+  // 左マージンを減らす
+  dd, li, blockquote, figure {
+    margin-left: 1.5rem;
+  }
+  
   #ngx-markdown-wiki-wrapper {
     display: block;
     
@@ -193,10 +203,10 @@ $nav-width: 270px;
     
     .main {
       margin-top: $header-height;
-      padding-right: 1.25rem;
-      padding-left: 1.25rem;
+      padding-right: 1rem;
+      padding-left: 1rem;
       
-      // id 属性を持つ要素はハッシュリンクで遷移時、ヘッダに隠れてしまうため
+      // ハッシュリンクで遷移時、ヘッダに隠れるのを防ぐ
       [id] {
         margin-top: -$header-height;
         padding-top: $header-height;

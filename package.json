@@ -1,6 +1,7 @@
 {
   "name": "ngx-markdown-wiki",
   "version": "1.0.0",
+  "private": true,
   "description": "Markdown-based Wiki system made with Angular",
   "scripts": {
     "ng": "ng",

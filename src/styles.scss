@@ -158,6 +158,7 @@ $nav-width: 270px;
     grid-area: main;
     padding: 1rem 0;
     z-index: 1;
+    overflow-x: hidden;  // pre 要素などに横スクロールバーを表示させるため
     
     // & > .contents > .contents-inner
     

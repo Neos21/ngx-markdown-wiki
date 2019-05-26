@@ -1,13 +1,18 @@
 {
   "name": "ngx-markdown-wiki",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Markdown-based Wiki system made with Angular",
   "scripts": {
+    "?ng": "echo 'Angular CLI'",
     "ng": "ng",
+    "?start": "echo 'Develop'",
     "start": "ng serve --open --base-href /",
+    "?lint": "echo 'Lint'",
     "lint": "ng lint --type-check",
+    "?build": "echo 'GitHub Pages 用にビルドする'",
     "build": "ng build --base-href ./ --prod",
+    "?docs": "echo 'npm run build 後、ドキュメントをコピーする'",
     "docs": "rimraf ./docs/assets/docs/ && cpx './src/assets/docs/**/*' ./docs/assets/docs/"
   },
   "dependencies": {
@@ -20,7 +25,7 @@
     "@angular/platform-browser": "6.0.6",
     "@angular/platform-browser-dynamic": "6.0.6",
     "@angular/router": "6.0.6",
-    "@neos21/neos-normalize": "1.0.3",
+    "@neos21/neos-normalize": "1.0.12",
     "core-js": "2.5.7",
     "marked": "0.4.0",
     "rxjs": "6.2.1",

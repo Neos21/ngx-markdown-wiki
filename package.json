@@ -38,7 +38,7 @@
     "@angular/platform-browser": "6.0.6",
     "@angular/platform-browser-dynamic": "6.0.6",
     "@angular/router": "6.0.6",
-    "@neos21/neos-normalize": "1.0.12",
+    "@neos21/neos-normalize": "1.0.15",
     "core-js": "2.5.7",
     "marked": "0.4.0",
     "rxjs": "6.2.1",

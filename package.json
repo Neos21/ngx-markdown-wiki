@@ -1,8 +1,7 @@
 {
   "name": "ngx-markdown-wiki",
-  "version": "1.0.1",
-  "private": true,
   "description": "Markdown-based Wiki system made with Angular",
+  "private": true,
   "scripts": {
     "?ng": "echo 'Angular CLI'",
     "ng": "ng",
@@ -14,6 +13,20 @@
     "build": "ng build --base-href ./ --prod",
     "?docs": "echo 'npm run build 後、ドキュメントをコピーする'",
     "docs": "rimraf ./docs/assets/docs/ && cpx './src/assets/docs/**/*' ./docs/assets/docs/"
+  },
+  "author": "Neos21 <neos21@gmail.com> (http://neo.s21.xrea.com/)",
+  "license": "MIT",
+  "homepage": "https://github.com/Neos21/ngx-markdown-wiki#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neos21/ngx-markdown-wiki.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Neos21/ngx-markdown-wiki/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Neos21"
   },
   "dependencies": {
     "@angular/animations": "6.0.6",
@@ -44,15 +57,5 @@
     "ts-node": "5.0.1",
     "tslint": "5.9.1",
     "typescript": "2.7.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Neos21/ngx-markdown-wiki.git"
-  },
-  "author": "Neos21 <neos21@gmail.com> (http://neo.s21.xrea.com/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Neos21/ngx-markdown-wiki/issues"
-  },
-  "homepage": "https://github.com/Neos21/ngx-markdown-wiki#readme"
+  }
 }

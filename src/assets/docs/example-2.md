@@ -8,7 +8,9 @@
 
 ## Heading 2
 
-_em 強調_、__strong 強調__。
+_em 強調_、__strong 強調__。アンダースコアで記述。
+
+*em 強調*、**strong 強調**。アスタリスクで記述。
 
 - [Go To Heading 5](#heading-5)
 

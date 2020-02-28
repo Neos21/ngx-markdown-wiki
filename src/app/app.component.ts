@@ -1,6 +1,7 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, Renderer } from '@angular/core';
-import { DomSanitizer, DOCUMENT, SafeHtml } from '@angular/platform-browser';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 
 import * as marked from 'marked';
@@ -45,14 +46,14 @@ export class AppComponent implements OnInit {
    * @param router Router
    * @param domSanitizer DomSanitizer
    * @param httpClient HttpClient
-   * @param renderer Renderer
+   * @param renderer2 Renderer2
    * @param document Document
    */
   constructor(
     private router: Router,
     private domSanitizer: DomSanitizer,
     private httpClient: HttpClient,
-    private renderer: Renderer,
+    private renderer2: Renderer2,
     @Inject(DOCUMENT) private document: any
   ) { }
   
@@ -130,7 +131,7 @@ export class AppComponent implements OnInit {
   public toggleNav(isShown?: boolean): void {
     // 引数が指定されていれば引数に従って操作、そうでなければ現在の状態を反転させる
     this.isShownNav = isShown !== undefined ? isShown : !this.isShownNav;
-    this.renderer.setElementClass(this.document.body, 'show-nav', this.isShownNav);
+    this.renderer2[this.isShownNav ? 'addClass' : 'removeClass'](this.document.body, 'show-nav');
   }
   
   /**

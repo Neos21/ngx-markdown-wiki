@@ -14,7 +14,7 @@
     "?docs": "echo 'ドキュメントをコピーする (npm run build 後に実行する)'",
     "docs": "rm -rf ./dist/assets/docs && cp -r ./src/assets/docs ./dist/assets"
   },
-  "author": "Neos21 <neos21@gmail.com> (http://neo.s21.xrea.com/)",
+  "author": "Neos21 <neos21@gmail.com> (https://neos21.net/)",
   "license": "MIT",
   "homepage": "https://github.com/Neos21/ngx-markdown-wiki#readme",
   "repository": {

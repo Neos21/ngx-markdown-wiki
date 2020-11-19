@@ -40,10 +40,6 @@
 
 ## Links
 
-- [Neo's World](http://neo.s21.xrea.com/)
-- [Corredor](https://neos21.hatenablog.com/)
-- [Murga](https://neos21.hatenablog.jp/)
-- [El Mylar](https://neos21.hateblo.jp/)
-- [Neo's GitHub Pages](https://neos21.github.io/)
+- [Neo's World](https://neos21.net/)
 - [GitHub - Neos21](https://github.com/Neos21/)
 - [GitHub - ngx-markdown-wiki](https://github.com/Neos21/ngx-markdown-wiki)
